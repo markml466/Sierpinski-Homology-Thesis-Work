@@ -1,0 +1,473 @@
+\documentclass[11pt]{beamer}
+\usetheme{Madrid}
+\usefonttheme{serif}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{ragged2e}
+\usepackage{tikz}
+\usepackage{tikz-cd, graphicx}
+\usepackage{mathrsfs}
+\usepackage{physics}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{mathdots}
+\usepackage{yhmath}
+\usepackage{cancel}
+\usepackage{color}
+\usepackage{siunitx}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{gensymb}
+\usepackage{tabularx}
+\usepackage{extarrows}
+\usepackage{booktabs}
+\usetikzlibrary{fadings}
+\usetikzlibrary{patterns}
+\usetikzlibrary{shadows.blur}
+\usetikzlibrary{shapes}
+
+\DeclareMathOperator{\sen}{sen}
+\DeclareMathOperator{\tg}{tg}
+
+\setbeamertemplate{caption}[numbered]
+
+\author[Mark Maldonado]{Author \\ Mark Maldonado}
+\title{Computing $H(S_n, S_{n + 1})$}
+% Informe o seu email de contato no comando a seguir
+% Por exemplo, alcebiades.col@ufes.br
+\newcommand{\email}{email}
+%\setbeamercovered{transparent} 
+\setbeamertemplate{navigation symbols}{}
+\institute[]{California Polytechnic State University - Pomona} 
+\date{\today} 
+%\subject{}
+
+% ---------------------------------------------------------
+% Selecione um estilo de referência
+\bibliographystyle{apalike}
+
+%\bibliographystyle{abbrv}
+%\setbeamertemplate{bibliography item}{\insertbiblabel}
+% ---------------------------------------------------------
+
+% ---------------------------------------------------------
+% Incluir os slides nos quais as referências foram citadas
+%\usepackage[brazilian,hyperpageref]{backref}
+
+%\renewcommand{\backrefpagesname}{Citado na(s) página(s):~}
+%\renewcommand{\backref}{}
+%\renewcommand*{\backrefalt}[4]{
+%	\ifcase #1 %
+%		Nenhuma citação no texto.%
+%	\or
+%		Citado na página #2.%
+%	\else
+%		Citado #1 vezes nas páginas #2.%
+%	\fi}%
+% ---------------------------------------------------------
+
+\begin{document}
+\justifying
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}{Summary}
+\tableofcontents 
+\end{frame}
+
+\section{The Problem}
+
+\begin{frame}{The Problem}
+    \begin{block}{Example 4.5}
+    \begin{justify}
+    Let $(\mathbf{F}_0, \mathbf{F}_1, \mathbf{F}_2 : \mathbb{R}^2 \to \mathbb{R}^2)_{i = 0}^2$ be the iterated function system given by $\mathbf{F}_i(x) = x_i + \dfrac{1}{2}(x - x_i)$, where $x_0 = (-1, 0)$, $x_1 = (1, 0)$, and $x_2 = (0, \sqrt{3})$. Define $S_0$ to be the solid equilateral triangle with vertices $x_0$, $x_1$, and $x_2$ and $S_k = \mathbf{F}_0[S_{k - 1}] \cup \mathbf{F}_1[S_{k - 1}] \cup \mathbf{F}_2[S_{k - 1}]$ for $k \geq 1$. Estimate, or find an upper bound, for the Hausdorff distance between $S_0$ and $S_1$.
+    \end{justify}
+    \end{block}
+    \begin{figure}[H]
+        \centering
+        
+        \tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+        
+        \begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+        %uncomment if require: \path (0,175); %set diagram left start at 0, and has height of 175
+        
+        %Shape: Triangle [id:dp7448902338819449] 
+        \draw   (324.55,23.76) -- (398.89,145.23) -- (249.72,145.23) -- cycle ;
+        %Shape: Triangle [id:dp3414109409031095] 
+        \draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=0.23 ] (286.61,85.31) -- (324.57,145.23) -- (249.72,145.23) -- cycle ;
+        %Shape: Triangle [id:dp15496460764385755] 
+        \draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=0.23 ] (362.2,85.31) -- (398.89,145.23) -- (324.05,145.23) -- cycle ;
+        %Shape: Triangle [id:dp9079205311924864] 
+        \draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=0.23 ] (324.63,23.76) -- (362.13,85.31) -- (286.61,85.31) -- cycle ;
+        
+        % Text Node
+        \draw (386.37,149.08) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize] [align=left] {$\displaystyle ( 1,0)$};
+        % Text Node
+        \draw (215.39,149.77) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize] [align=left] {$\displaystyle ( -1,0)$};
+        % Text Node
+        \draw (303.71,6.27) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize] [align=left] {$\displaystyle \left( 0,\sqrt{3}\right)$};
+        % Text Node
+        \draw (316.12,101.01) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize] [align=left] {$\displaystyle S_{0}$};
+        % Text Node
+        \draw (278.87,117.01) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize] [align=left] {$\displaystyle S_{1}$};
+        % Text Node
+        \draw (354.12,117.26) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize] [align=left] {$\displaystyle S_{1}$};
+        % Text Node
+        \draw (317.37,54.76) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize] [align=left] {$\displaystyle S_{1}$};
+        
+        \end{tikzpicture}
+
+    \end{figure} 
+    
+\end{frame}
+
+\section{The Solution}
+
+\begin{frame}{Solution Pt. 1}
+    Since $S_1 \subseteq S_0$, it follows that $H(S_0, S_1) = D(S_0, S_1) = \max_{\mathbf{x} \in S_0}($ $\min_{\mathbf{y} \in S_1} \lVert \mathbf{x} - \mathbf{y} \rVert_2)$. Because $S_1 \subseteq S_0$, then for any $\mathbf{x} \in S_1$, $\min_{\mathbf{y} \in S_1} \lVert \mathbf{x} - \mathbf{y} \rVert_2 = 0$, so $H(S_0, S_1) = \sup_{\mathbf{x} \in S_0 \backslash S_1}(\min_{\mathbf{y} \in S_1} \lVert \mathbf{x} - \mathbf{y} \rVert_2)$. The following lemma will be helpful in calculating $H(S_0, S_1)$.
+    \begin{block}{Lemma 4.6}
+    \begin{justify}
+        Let $K \in \mathscr{H}(\mathbb{R}^n)$, and $x \in \mathbb{R}^n\backslash K$. If $r : K \to \mathbb{R}$ is given by $r(k) = \lVert k - x \rVert_2$, then $\min\limits_{k \in K} r(k) = r(k_0)$ for some $k_0 \in \partial K$, the boundary of $K$.
+    \end{justify}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Solution Pt. 2}
+    \begin{proof}
+    \begin{justify}
+        Because $K$ is compact, then by the Extreme Value Theorem, $\min\limits_{k \in K} r(k)$ exists. So, there exists $k_0$ such that $r(k_0) = \min\limits_{k \in K} r(k)$ Now suppose for a contradiction that $k_0 \notin \partial K$. Because compact subsets of metric spaces are closed, $K = \text{int} K \cup \partial K$. Thus, $k_0 \in \text{int} K$, so there exists $\gamma > 0$ such that $B_\gamma(k_0) \subseteq K$. Now consider the function $f: [0, 1] \to \mathbb{R}^n$ given by $f(t) = tx + \left(1 - t\right)k_0$, the function describing the line segment $f([0, 1])$ between $x$ and $k_0$. Because $B_\gamma(k_0) \subseteq K$, $r(k_0) \geq \gamma$. Also, since $k_0 \in f([0, 1]) \cap B_{\gamma}(k_0)$ and that $f([0, 1]) \cap \partial B_{\gamma}(k_0)$ are nonempty and that $B_{\gamma}(k_0)$ is convex, there exists $0 \leq t_0 \leq 1$ such that $\lbrace f(t) : 0 \leq  t < t_0 \rbrace \subseteq B_{\gamma}(k_0)$, where $\lVert k - f(t_0) \rVert = \gamma$. Therefore, there exists $0 \leq t' < t_0$ such that $r(f(t')) = \lVert f(t') - k_0 \rVert = \epsilon/2 < \epsilon \leq r(k_0)$, contradicting the minimality of $k_0$. Therefore, $k_0 \in \partial K$.
+    \end{justify}
+    \end{proof}
+\end{frame}
+
+\begin{frame}{Solution Pt. 3}
+    By Lemma 4.6, $H(S_0, S_1) = \sup_{\mathbf{x} \in S_0 \backslash S_1}(\min_{\mathbf{y} \in \partial S_1} \lVert \mathbf{x} - \mathbf{y} \rVert)$. Letting $(x, y) \in \partial S_1$, there are six possibilities for $\mathbf{y}$, which are given in the figure for $S_0$ and $S_1$ below.
+    \begin{figure}[H]
+        \centering
+
+        \tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+        
+        \begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+        %uncomment if require: \path (0,198); %set diagram left start at 0, and has height of 198
+        
+        %Shape: Triangle [id:dp7448902338819449] 
+        \draw   (324.55,23.76) -- (398.89,145.23) -- (249.72,145.23) -- cycle ;
+        %Shape: Triangle [id:dp3414109409031095] 
+        \draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=0.23 ] (286.61,85.31) -- (324.57,145.23) -- (249.72,145.23) -- cycle ;
+        %Shape: Triangle [id:dp15496460764385755] 
+        \draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=0.23 ] (362.2,85.31) -- (398.89,145.23) -- (324.05,145.23) -- cycle ;
+        %Shape: Triangle [id:dp9079205311924864] 
+        \draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=0.23 ] (324.63,23.76) -- (362.13,85.31) -- (286.61,85.31) -- cycle ;
+        %Straight Lines [id:da8435375725517121] 
+        \draw    (340.6,124.54) -- (361.75,166.36) ;
+        \draw [shift={(339.25,121.86)}, rotate = 63.18] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (10.72,-5.15) -- (0,0) -- (10.72,5.15) -- (7.12,0) -- cycle    ;
+        %Straight Lines [id:da37327759100661373] 
+        \draw    (361.5,45.5) -- (336.42,82.87) ;
+        \draw [shift={(334.75,85.36)}, rotate = 303.87] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (10.72,-5.15) -- (0,0) -- (10.72,5.15) -- (7.12,0) -- cycle    ;
+        %Straight Lines [id:da6270876805178814] 
+        \draw    (307.3,123.99) -- (281.75,170.36) ;
+        \draw [shift={(308.75,121.36)}, rotate = 118.86] [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.08]  [draw opacity=0] (10.72,-5.15) -- (0,0) -- (10.72,5.15) -- (7.12,0) -- cycle    ;
+        
+        % Text Node
+        \draw (386.37,149.08) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize] [align=left] {$\displaystyle ( 1,0)$};
+        % Text Node
+        \draw (215.39,149.77) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize] [align=left] {$\displaystyle ( -1,0)$};
+        % Text Node
+        \draw (303.71,6.27) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize] [align=left] {$\displaystyle \left( 0,\sqrt{3}\right)$};
+        % Text Node
+        \draw (279.87,126.01) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize] [align=left] {$\displaystyle S_{1}$};
+        % Text Node
+        \draw (359.12,126.76) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize] [align=left] {$\displaystyle S_{1}$};
+        % Text Node
+        \draw (316.87,45.76) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize] [align=left] {$\displaystyle S_{1}$};
+        % Text Node
+        \draw (230.81,131.66) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize,rotate=-301.89] [align=left] {$\displaystyle y=\sqrt{3} x+\sqrt{3}$};
+        % Text Node
+        \draw (370.83,58.73) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize,rotate=-58.75] [align=left] {$\displaystyle y=-\sqrt{3} x+\sqrt{3}$};
+        % Text Node
+        \draw (307,149) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize] [align=left] {$\displaystyle y=0$};
+        % Text Node
+        \draw (344.5,168.5) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize] [align=left] {$\displaystyle y=\sqrt{3} x$};
+        % Text Node
+        \draw (249,170.5) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize] [align=left] {$\displaystyle y=-\sqrt{3} x$};
+        % Text Node
+        \draw (344,25.5) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize] [align=left] {$\displaystyle y=\sqrt{3} /2$};
+        % Text Node
+        \draw (316.37,100.26) node [anchor=north west][inner sep=0.75pt]  [font=\scriptsize] [align=left] {$\displaystyle S_{0}$};
+        
+        \end{tikzpicture}
+    
+    \end{figure}
+    \underline{Claim}: $H(S_0, S_1) = \dfrac{\sqrt{3}}{6} < 2^0 = 1$.
+\end{frame}
+
+\begin{frame}{Solution Pt. 4}
+    We focus only on lines $L_1$, $L_2$, and $L_3$ given by $y = \sqrt{3}x$, $y = -\sqrt{3}x$, and $y = \sqrt{3}/2$, respectively, as it is clear from the figure that these lines are \lq \lq closer" to $S_0$ than the other three lines. We have that
+    \begin{align*}
+        &\sup \left\lbrace \min_{\mathbf{y} \in \partial S_1} \lVert \mathbf{x} - \mathbf{y} \rVert_2 : \mathbf{x} \in S_0 \right\rbrace = \sup \lbrace \min \bigcup_{\mathbf{y} \in L_1} \lVert \mathbf{x} - \mathbf{y} \rVert_2 \cup \\ &\bigcup_{\mathbf{y} \in L_2} \lVert \mathbf{x} - \mathbf{y} \rVert_2 \cup \bigcup_{\mathbf{y} \in L_3} \lVert \mathbf{x} - \mathbf{y} \rVert_2 : \mathbf{x} \in S_0 \backslash S_1 \rbrace \\
+        &= \sup \lbrace \min \lbrace \min \bigcup_{L_1} \lVert \mathbf{x} - \mathbf{y} \rVert, \min \bigcup_{L_2} \lVert \mathbf{x} - \mathbf{y} \rVert, \min \bigcup_{L_3} \lVert \mathbf{x} - \mathbf{y} \rVert \rbrace \\ & : \mathbf{x} \in S_0 \backslash S_1 \rbrace
+    \end{align*}
+    If $A = \lbrace (0, 0), (0, \sqrt{3}/3), (1/2, \sqrt{3}/2) \rbrace$, $B = \lbrace (0, 0), (0, \sqrt{3}/3), (-1/2,$ $\sqrt{3}/2) \rbrace$, and $C = \lbrace (-1/2, \sqrt{3}/2), (0, \sqrt{3}/3), (1/2, \sqrt{3}/2) \rbrace$, and also letting $A_0 = \lbrace (0, 0), (1/2, \sqrt{3}/2) \rbrace$,
+\end{frame}
+
+\begin{frame}{Solution Pt. 5}
+    $B_0 = \lbrace (0, 0), (-1/2, \sqrt{3}/2) \rbrace$, and $C_0 = \lbrace (-1/2, \sqrt{3}/2), (1/2, \sqrt{3}/2) \rbrace$, then $S_0 \backslash S_1 = \text{conv}A \backslash \text{conv} A_0 \cup \text{conv}B \backslash \text{conv} B_0 \cup \text{conv}C \backslash \text{conv} C_0$. We now state a lemma needed for the remainder of the solution.
+    \begin{block}{Lemma 4.7}
+        Let $\triangle ABC$ be an solid equilateral triangle with vertices $A$, $B$, and $C$ in $\mathbb{R}^2$, and let $M$ be the centroid of $\triangle ABC$. Then
+        \begin{enumerate}
+            \item[(i)] If $\mathbf{x} \in \triangle AMB$, then $\min \lbrace d_{\mathbb{R}^2}(\mathbf{x}, \overline{AB}), d_{\mathbb{R}^2}(\mathbf{x}, \overline{BC}), d_{\mathbb{R}^2}(\mathbf{x}, \overline{AC}) \rbrace = d_{\mathbb{R}^2}(\mathbf{x}, \overline{AB})$;
+            \item[(ii)] If $\mathbf{x} \in \triangle AMC$, then $\min \lbrace d_{\mathbb{R}^2}(\mathbf{x}, \overline{AB}), d_{\mathbb{R}^2}(\mathbf{x}, \overline{BC}), d_{\mathbb{R}^2}(\mathbf{x}, \overline{AC}) \rbrace = d_{\mathbb{R}^2}(\mathbf{x}, \overline{AC})$;
+            \item[(iii)] If $\mathbf{x} \in \triangle BMC$, then $\min \lbrace d_{\mathbb{R}^2}(\mathbf{x}, \overline{AB}), d_{\mathbb{R}^2}(\mathbf{x}, \overline{BC}), d_{\mathbb{R}^2}(\mathbf{x}, \overline{AC}) \rbrace = d_{\mathbb{R}^2}(\mathbf{x}, \overline{BC})$.
+        \end{enumerate}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Solution Pt. 6}
+    Fix $(x_0, y_0) \in S_0 \backslash S_1$, Define $f, g, h : \mathbb{R} \to \mathbb{R}$ by
+    \begin{align*}
+        f(x) &= \lVert (x_0, y_0) - (x, \sqrt{3}x) \rVert \\
+        &= \sqrt{4x^2 - x(2\sqrt{3}y_0 + 2x_0) + (x_0^2 + y_0^2)},
+    \end{align*}
+    \begin{align*}
+        g(x) &= \lVert (x_0, y_0) - (x, -\sqrt{3}x) \rVert \\
+        &= \sqrt{4x^2 + x(2\sqrt{3}y_0 - 2x_0) + (x_0^2 + y_0^2)},
+    \end{align*}
+    and
+    \begin{align*}
+        h(x) &= \lVert (x_0, y_0) - (x, \sqrt{3}/2) \rVert \\
+        &= \sqrt{x^2 + x(-2x_0) + (x_0^2 + y_0^2 - \sqrt{3}y_0 + 3/4)}.
+    \end{align*}
+\end{frame}
+
+\begin{frame}{Solution Pt. 7}
+    Then 
+    \begin{align*}
+        &f'(x) = \dfrac{1}{2f(x)} \cdot (8x - 2\sqrt{3}y_0 - 2x_0), \\
+        &g'(x) = \dfrac{1}{2g(x)} \cdot (8x + 2\sqrt{3}y_0 - 2x_0), \\
+        &h'(x) = \dfrac{1}{2h(x)} \cdot (2x - 2x_0).
+    \end{align*}
+    for which the values $x_{f, (x_0, y_0)} = \dfrac{x_0 + \sqrt{3}y_0}{4}$, $x_{g, (x_0, y_0)} = \dfrac{x_0 - \sqrt{3}y_0}{4}$, and $x_{h, (x_0, y_0)} = x_0$ satisfy $f'(x_{f, (x_0, y_0)}) = g'(x_{g, (x_0, y_0)}) = h'(x_{h, (x_0, y_0)}) = 0$. Therefore, if $\mathbf{x}_0 = (x_0, y_0)$, then $\min \bigcup_{L_1} \lVert \mathbf{x}_0 - \mathbf{y} \rVert = f(x_{f, \mathbf{x}_0})$, $\min \bigcup_{L_2} \lVert \mathbf{x}_{0}$ $- \mathbf{y} \rVert = g(x_{g, \mathbf{x}_0})$, and $\min \bigcup_{L_3} \lVert \mathbf{x}_0 - \mathbf{y} \rVert = h(x_{h, \mathbf{x}_0})$.
+\end{frame}
+
+\begin{frame}{Solution Pt. 8}
+    Now by Lemma 4.7,
+    \begin{align*}
+        D(S_0, S_1) = \sup &\bigcup_{\mathbf{x} \in \text{conv}A \backslash \text{conv}A_0} \min \bigcup_{\mathbf{y} \in L_1} \lVert \mathbf{x} - \mathbf{y} \rVert \cup \\
+        &\bigcup_{\mathbf{x} \in \text{conv}B \backslash \text{conv}B_0} \min \bigcup_{\mathbf{y} \in L_2} \lVert \mathbf{x} - \mathbf{y} \rVert \cup \\
+        &\bigcup_{\mathbf{x} \in \text{conv}C \backslash \text{conv}C_0} \min \bigcup_{\mathbf{y} \in L_3} \lVert \mathbf{x} - \mathbf{y} \rVert,
+    \end{align*}
+    and by the stability propery of $\sup$ and the previous differentiation results from Slide 11,
+    \begin{align*}
+        D(S_0, S_1) = \max \lbrace &\sup \bigcup_{\mathbf{x} \in \text{conv} A \backslash \text{conv} A_0} f(x_{f, \mathbf{x}}), \sup \bigcup_{\mathbf{x} \in \text{conv} B \backslash \text{conv} B_0} g(x_{g, \mathbf{x}}), \\
+        &\sup \bigcup_{\mathbf{x} \in \text{conv} C \backslash \text{conv} C_0} h(x_{h, \mathbf{x}}) \rbrace.
+    \end{align*}
+\end{frame}
+
+\begin{frame}{Solution Pt. 9}
+    To calculate the suprema, partial differentiation will be used alongside the contraposition of the fact that if a function has an extreme point, then all of its partial derivatives equal $0$ at that point. Set $T := \lbrace (\lambda_0, \lambda_1, \lambda_2) \in \mathbb{R}^3 : \lambda_0 + \lambda_1 + \lambda_2 = 1, \lambda_0, \lambda_2 \geq 0, \lambda_1 > 0 \rbrace$, the barycentric coordinates of the points in $\text{conv}A \backslash \text{conv}A_0$, and define $r : T \to [0, \infty)$ by
+    \begin{align*}
+        r(\lambda_0, \lambda_1, \lambda_2) &= f(x_{f, (1/2\lambda_2, \sqrt{3}/3\lambda_1 + \sqrt{3}/2\lambda_2)}) \\
+        &= \dfrac{1}{2}[3((1/2)\lambda_2)^2 - 2\sqrt{3}(\sqrt{3}/3\lambda_1 + \sqrt{3}/2\lambda_2) \\ 
+        &+ (\sqrt{3}/3\lambda_1 + \sqrt{3}/2\lambda_2)^2]^{1/2} \\
+        &= \dfrac{\lambda_1}{2\sqrt{3}}.
+    \end{align*}
+    This function represents the minimal distance from $\text{conv}A_0$ to a point in $\text{conv}A \backslash \text{conv}A_0$ using its barycentric coordinates with respect to $(0, 0)$, $(0, \sqrt{3}/3)$, and $(1/2, \sqrt{3}/2)$.
+\end{frame}
+
+\begin{frame}{Solution Pt. 10}
+    We see that $r_{\lambda_0}(\lambda_0, \lambda_1, \lambda_2) = 0 = r_{\lambda_2}(\lambda_0, \lambda_1, \lambda_2)$ and $r_{\lambda_1}(\lambda_0, \lambda_1, \lambda_2) = \dfrac{1}{2\sqrt{3}}$. Therefore, $r$ has no extreme values, and by setting $f(t) := r(\lambda_0, t, $ $\lambda_2)$ for $0 < t \leq 1$, we see $f(t) = t/2\sqrt{3}$. $f$ is clearly increasing, so it follows that
+    \begin{align*}
+        \sup \bigcup_{\mathbf{x} \in \text{conv}A \backslash \text{conv}A_0} f(x_{f, \mathbf{x}}) = f(1) = \dfrac{1}{2\sqrt{3}} = \dfrac{\sqrt{3}}{6}.
+    \end{align*}
+    The calculation for $\text{conv}B \backslash \text{conv}B_0$ is similar and also yields $\sqrt{3}/6$, so we only focus on $\text{conv} C \backslash \text{conv} C_0$. Define $s : T \to [0, \infty)$ by
+    \begin{align*}
+        s(\lambda_0, \lambda_1, \lambda_2) &= h(x_{h, (1/2(\lambda_2 - \lambda_0), \sqrt{3}/2(\lambda_0 + \lambda_2) + \sqrt{3}/3\lambda_1)}) \\
+        &= \left|\dfrac{\sqrt{3}}{2} - \left(\dfrac{\sqrt{3}}{2}(\lambda_0 + \lambda_2) + \dfrac{\sqrt{3}}{3}\lambda_1\right)\right| \\
+        &= \dfrac{\sqrt{3}}{2} - \left(\dfrac{\sqrt{3}}{2}(\lambda_0 + \lambda_2) + \dfrac{\sqrt{3}}{3}\lambda_1\right)
+    \end{align*}
+\end{frame}
+
+\begin{frame}{Solution Pt. 11}
+    since
+    \begin{align*}
+        \sqrt{3} \cdot 1/2 &= \sqrt{3} \cdot (1/2\lambda_0 + 1/2\lambda_1 + 1/2\lambda_2) \\
+        &> \sqrt{3} \cdot (1/2\lambda_0 + 1/3\lambda_1 + 1/2\lambda_2).
+    \end{align*}
+    We have that $s_{\lambda_0}(\lambda_0, \lambda_1, \lambda_2) = -\sqrt{3}/2 = s_{\lambda_2}(\lambda_0, \lambda_1, \lambda_2)$ and $s_{\lambda_1}(\lambda_0, \lambda_1,$ $\lambda_2) = \sqrt{3}/3$, meaning there are no extreme values. Thus, we must check the boundary of $\text{conv}C$. We'll first look at the case where $\lambda_0 = 0$. Then setting
+    \begin{align*}
+        s_0(\lambda_1, \lambda_2) := s(0, \lambda_1, \lambda_2) = \dfrac{\sqrt{3}}{2} - \dfrac{\sqrt{3}}{2}\lambda_2 - \dfrac{\sqrt{3}}{3}\lambda_1
+    \end{align*}
+    for which $s_{0_{\lambda_1}}(\lambda_1, \lambda_2) = -\sqrt{3}/3$ and $s_{0_{\lambda_2}}(\lambda_1, \lambda_2) = -\sqrt{3}/2$. Again, $s_0$ has no extreme values, meaning we must check the boundary of $\text{conv} \lbrace (0, \sqrt{3}/3), (1/2, \sqrt{3}/2) \rbrace$.
+\end{frame}
+
+\begin{frame}{Solution Pt. 12}
+    But these are simply the points $(0, \sqrt{3}/3)$ and $(1/2, \sqrt{3}/2)$, which correspond to $\lambda_1 = 1$ with $\lambda_0 = \lambda_2 = 0$ or $\lambda_2 = 1$ with $\lambda_0 = \lambda_1 = 0$. The latter case yields $s(0, 0, 1) = \sqrt{3}/2 - \sqrt{3}/2 = 0$, while the first yields $s(0, 1, 0) = \sqrt{3}/2 - \sqrt{3}/3 = \sqrt{3}/6$. 
+    
+    The other two cases where $\lambda_1 = 0$ or $\lambda_2 = 0$ to obtain the desired maximum value of $s$ are similar and $\sqrt{3}/6$ is obtained in both cases.
+
+    Therefore,
+
+    \begin{align*}
+        H(S_0, S_1) = \max\lbrace \sqrt{3}/6, \sqrt{3}/6, \sqrt{3}/6 \rbrace = \sqrt{3}/6.
+    \end{align*}
+\end{frame}
+
+\section{Conjecture Results}
+
+\begin{frame}{Conjecture Results}
+    Due to the work in Example 4.5 along with a result, to be proven, involving the Hutchinson operator, we can draw definitive conclusions of the following conjectures:
+
+\begin{block}{Conjecture 4.9}
+    \begin{justify}
+        For any $n \in \mathbb{Z}_{\geq 0}$, $0 < H(S_n, S_{n + 1}) \leq 2^{-n}$ and $0 < H(\mathbf{F}_i[S_n], \mathbf{F}_i[S_{n + 1}]) \leq 2^{-(n + 1)}$ for $i = 0, 1,$ or $2$. \textcolor{ForestGreen}{\textbf{TRUE!}}
+    \end{justify}
+\end{block}
+
+\begin{block}{Conjecture 4.11}
+    \begin{justify}
+        $H(S_n, \mathbb{S}) \leq 2^{-n + 1}$ for every $n \in \mathbb{N}$. \textcolor{ForestGreen}{\textbf{TRUE!}}
+    \end{justify}
+\end{block}
+
+\begin{block}{Conjecture 4.12}
+    \begin{justify}
+        For any $n \in \mathbb{Z}_{\geq 0}$, $H(\mathbf{F}_i[S_n], \mathbf{F}_i[S_{n + 1}]) = 2^{-(n + 1)}$ and $H(S_n, S_{n + 1}) = 2^{-n}$ for $i = 0, 1,$ or $2$. \textcolor{Red}{\textbf{FALSE!}}
+    \end{justify}
+\end{block}
+
+\end{frame}
+
+\begin{frame}{The Hutchinson Operator}
+    \begin{block}{The Hutchinson Operator is a Contraction Mapping}
+    \begin{justify}
+        Let $(\mathbb{X}, d)$ be a metric space and $(f_1, f_2, \ldots, f_n : \mathbb{X} \to \mathbb{X})$ be an iterated function system of contracting similarities on $\mathbb{X}$ with ratios $r_1, r_2, \ldots, r_n < 1$, respectively. Define $r := \max \lbrace r_1, r_2, \ldots, r_n \rbrace$. Then if $F : \mathscr{H}(\mathbb{X}) \to \mathscr{H}(\mathbb{X})$ is defined by 
+        \begin{align*}
+            F(A) = \bigcup_{i = 1}^n f_i[A],
+        \end{align*}
+        then $F$ is a contracting similarity on $\mathscr{H}(\mathbb{X})$ with ratio $r$.
+    \end{justify}
+    \end{block}
+\end{frame}
+
+\begin{frame}{The Hutchinson Operator Pt. 2}
+    \begin{block}{Proof.}
+    \begin{justify}
+        The argument that follows is based from Gerald Edgar's \emph{Measure, Topology, and Fractal Geometry}. Let $A, B \in \mathscr{H}(\mathbb{X})$ and suppose that $q \in \mathbb{R}$ such that $D_{\mathbb{X}}(A, B) < q$. Then $A \subseteq N_q(B)$ and $B \subseteq N_q(A)$. Now let $x \in F(A)$. We want to show that $x \in N_{rq}(F(B))$. We have that $f_i(x') = x$ for some $1 \leq i \leq n$ and $x' \in A$. Since $A \subseteq N_q(B)$, there exists $y' \in B$ such that $d(x', y') < q$. Hence, $d(f_i(x'), f_i(y')) = r_id(x', y') < r_iq \leq rq$. Since $f_i(x') = x$ and $f_i(y') \in F(B)$, it follows that $F(A) \subseteq N_{rq}(F(B))$. A similar proof shows that $F(B) \subseteq N_{rq}(F(A))$. Therefore, $D_{\mathbb{X}}(F(A), F(B)) \leq rq$. And since $q$ is any upper bound for $\lbrace x \in \mathbb{R} : x \leq D_{\mathbb{X}}(A, B) \rbrace$ and that $\sup \lbrace x \in \mathbb{R} : x \leq D_{\mathbb{X}}(A, B) \rbrace = D_{\mathbb{X}}(A, B)$, it follows that $D_{\mathbb{X}}(F(A), F(B)) \leq rD_{\mathbb{X}}(A, B)$. Hence, $F$ is a contracting similarity on $\mathscr{H}(\mathbb{X})$ with ratio $r$. \qed
+    \end{justify}
+    \end{block}
+\end{frame}
+
+\begin{frame}{The Conjectures (cont'd)}
+    \begin{block}{Proposition 4.9}
+    \begin{justify}
+        For any $n \in \mathbb{Z}_{\geq 0}$, $0 < H(S_n, S_{n + 1}) \leq 2^{-n} \cdot \dfrac{\sqrt{3}}{6}$ and $0 < H(\mathbf{F}_i[S_n], \mathbf{F}_i[S_{n + 1}]) \leq 2^{-(n + 1)} \cdot \dfrac{\sqrt{3}}{6}$ for $i = 0, 1,$ or $2$.
+    \end{justify}
+\end{block}
+
+\begin{block}{Proof.}
+\begin{justify}
+    We proceed via induction. For $n = 0$, we proved in Example 4.5 that $H(S_0, S_1) = \sqrt{3}/6$. Now suppose that for some integer $k \geq 0$, $H(S_{k}, S_{k + 1}) \leq 2^{-k} \cdot \sqrt{3}/6$. Define $F : \mathscr{H}(\mathbb{R}^2) \to \mathscr{H}(\mathbb{R}^2)$ by $F(A) = \mathbf{F}_0[A] \cup \mathbf{F}_1[A] \cup \mathbf{F}_2[A]$, a union of contracting similarities on $\mathbb{R}^2$. Since the Hutchinson operator is a contraction mapping,
+\end{justify}
+\end{block}
+\end{frame}
+
+\begin{frame}{The Conjectures (cont'd)}
+\begin{block}{Proof. (Pt. 2)}
+\begin{justify}
+    \begin{align*}
+        H(S_{k + 1}, S_{k + 2}) &= H(\mathbf{F}_0[S_{k}] \cup \mathbf{F}_1[S_{k}] \cup \mathbf{F}_2[S_{k}], \mathbf{F}_0[S_{k + 1}] \cup \mathbf{F}_1[S_{k + 1}] \\ &\cup \mathbf{F}_2[S_{k + 1}]) \\
+        &= H(F(S_k), F(S_{k + 1})) \\
+        &\leq \dfrac{1}{2}H(S_k, S_{k + 1}) \\
+        &\leq \dfrac{1}{2} \cdot 2^{-k} \cdot \dfrac{\sqrt{3}}{6} = 2^{-(k + 1)} \cdot \dfrac{\sqrt{3}}{6}.
+    \end{align*}
+    To prove the second inequality, define $G : \mathscr{H}(\mathbb{R}^2) \to \mathscr{H}(\mathbb{R}^2)$ by $G(A) = \mathbf{F}_i[A]$. Then by the previous inequality,
+\end{justify}
+\end{block}
+\end{frame}
+
+\begin{frame}{The Conjectures (cont'd)}
+\begin{block}{Proof. (Pt. 3)}
+\begin{justify}
+    \begin{align*}
+        H(\mathbf{F}_i[S_{n}], \mathbf{F}_i[S_{n + 1}]) &= H(G(S_{n}), G(S_{n + 1})) \\
+        &\leq \dfrac{1}{2}H(S_{n}, S_{n + 1}) \\
+        &\leq \dfrac{1}{2} \cdot 2^{-n} \cdot \sqrt{3}/6 \\
+        &= 2^{-(n + 1)} \cdot \sqrt{3}/6.
+    \end{align*}
+    Hence, $H(\mathbf{F}_i[S_{n}], \mathbf{F}_i[S_{n + 1}]) \leq 2^{-(n + 1)} \cdot \sqrt{3}/6$. \qed
+\end{justify}
+\end{block}
+\end{frame}
+
+\begin{frame}{The Conjectures (cont'd)}
+\begin{block}{The Collage Theorem}
+\begin{justify}
+    Let $(\mathbb{X}, d)$ be a complete metric space. Let $L \in \mathscr{H}(\mathbb{X})$ be given, and let $\epsilon \geq 0$ be given. Consider an IFS $(f_0, f_1, \ldots f_n : \mathbb{X} \to \mathbb{X})$ of contracting similarities with ratio $0 \leq r < 1$. If
+    \begin{align}
+        H\left(L, \bigcup_{i = 0}^{n} f_i[L]\right) \leq \epsilon,
+    \end{align}
+    then
+    \begin{align*}
+        H(L, A) \leq \dfrac{\epsilon}{1 - s},
+    \end{align*}
+    where $A$ is the unique attractor of $(f_0, f_1, \ldots f_n : \mathbb{X} \to \mathbb{X})$.
+\end{justify}
+\end{block}
+\end{frame}
+
+\begin{frame}{The Conjectures (cont'd)}
+\begin{block}{Corollary 4.11}
+\begin{justify}
+    $H(S_n, \mathbb{S}) \leq 2^{-n + 1} \cdot \sqrt{3}/6$ for every $n \in \mathbb{N}$.
+\end{justify}
+\end{block}
+
+\begin{proof}
+    By Proposition 4.9, for every $n \in \mathbb{N}$, $H(S_n, S_{n + 1}) \leq 2^{-n} \cdot \sqrt{3}/6$. Since $\mathbf{F}_0[S_n] \cup \mathbf{F}_1[S_n] \cup \mathbf{F}_2[S_n] = S_{n + 1}$, then by the Collage Theorem, $H(S_n, \mathbb{S}) \leq \dfrac{2^{-n} \cdot \sqrt{3}/6}{1 - 1/2} = 2^{-n + 1} \cdot \sqrt{3}/6$.
+\end{proof}
+
+\end{frame}
+
+\begin{frame}{The Conjectures (cont'd)}
+\begin{block}{Corollary 4.11}
+\begin{justify}
+    For any $n \in \mathbb{Z}_{\geq 0}$, $H(\mathbf{F}_i[S_n], \mathbf{F}_i[S_{n + 1}]) = 2^{-(n + 1)}$ and $H(S_n, S_{n + 1}) = 2^{-n}$ for $i = 0, 1,$ or $2$. \textcolor{Red}{\textbf{FALSE!}}
+\end{justify}
+\end{block}
+
+Example 4.5 clearly indicated for $n = 0$ that $H(S_0, S_1) = \sqrt{3}/6 < 2^0 = 1$. Likewise, it follows by Proposition 4.9 that $H(\mathbf{F}_i[S_0], \mathbf{F}_i[S_1]) = \sqrt{3}/12 < 1/2$.
+
+\end{frame}
+
+\section{Potential Generalizations for Future Research}
+
+\begin{frame}{Possible Generalizations?}
+    Possibly. There is a class of fractals called \emph{$n$-flakes}, which are simply fractals constructed by applying iterated function systems of similitudes to regular $n$-gons. The Sierpinski Gasket is an example of a $3$-flake since its initiator is an equilateral triangle, or regular $3$-gon. Another example is the \emph{$5$-flake}, constructed by starting with a pentagon as the initiator. Using an IFS with $5$ dilations centered at the extreme points of the pentagon, we obtain the following below.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.54\textwidth]{5-flake.png}
+        \caption{The $5$-flake. \cite{wilkinson}}
+        \label{figure: example}
+    \end{figure}
+
+\end{frame}
+
+\begin{frame}{Bibliography}
+    \begin{thebibliography}{9}
+    \bibitem{edgar2008}
+    Gerald Edgar, \textit{Measure, Topology, and Fractal Geometry}, Springer, 2nd ed., 2008.
+    \bibitem{barnsley}
+    Michael F. Barnsley, \textit{Fractals Everywhere: New Edition}, Dover, 2012.
+    \bibitem{wilkinson}
+    Steven Wilkinson and Blake Settle, \lq\lq $n$-Flake Variations", \emph{Bridges 2024 Conference Proceedings}, Northern Kentucky University, 2024.
+    \end{thebibliography}
+\end{frame}
+
+\end{document}
